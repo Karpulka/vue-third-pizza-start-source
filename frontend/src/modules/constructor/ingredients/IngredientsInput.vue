@@ -13,21 +13,19 @@
         }}</span>
 
         <AppCounter
-          v-model.lazy="ingredientsCount[ingredient.alias].value"
+          v-model="ingredientsCount[ingredient.alias].value"
           :min-value="0"
           :max-value="maxIngredientsCount"
           :is-input-disabled="ingredientsCount[ingredient.alias].isInputDisable"
           :class="`ingredients__counter`"
         />
-
-        <input v-model="selectedIngredients" disabled class="visually-hidden" />
       </li>
     </ul>
   </div>
 </template>
 
 <script setup>
-import { computed, reactive } from "vue";
+import { reactive, watch } from "vue";
 
 import AppCounter from "@/common/components/AppCounter.vue";
 
@@ -39,34 +37,25 @@ const props = defineProps({
     required: true,
     default: () => [],
   },
-  modelValue: {
-    type: Array,
-    default: () => [],
-  },
 });
 
-const ingredientsStartCount = () => {
-  const count = {};
-  for (const value of Object.values(props.ingredients)) {
-    count[value.alias] = {
-      value: 0,
-      isInputDisable: false,
-    };
-  }
-  return count;
-};
+const ingredientsCount = reactive({});
 
-const ingredientsCount = reactive(ingredientsStartCount());
+props.ingredients.forEach((ingredient) => {
+  ingredientsCount[ingredient.alias] = {
+    value: 0,
+    isInputDisable: false,
+  };
+});
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits("onUpdateSelectedIngredients");
 
-const selectedIngredients = computed({
-  get() {
-    return props.modelValue;
-  },
-  set() {
-    emit("update:modelValue", ingredientsCount);
-  },
+watch(ingredientsCount, () => {
+  const ingredients = Object.keys(ingredientsCount);
+  const filteredIngredients = ingredients.filter(
+    (ingredient) => ingredientsCount[ingredient].value > 0
+  );
+  emit("onUpdateSelectedIngredients", filteredIngredients);
 });
 </script>
 

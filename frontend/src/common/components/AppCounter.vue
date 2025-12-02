@@ -15,6 +15,7 @@
       class="counter__input"
       :disabled="isInputDisabled"
       @input="inputValidate"
+      @change="emit('onChangeCount')"
     />
     <button
       type="button"
@@ -28,7 +29,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { computed } from "vue";
 
 const props = defineProps({
   isInputDisabled: { type: Boolean, required: false },
@@ -44,7 +45,7 @@ const props = defineProps({
   },
 });
 
-let counterValue = ref(0, {
+let counterValue = defineModel({
   type: Number,
   default: 0,
 });
@@ -67,11 +68,15 @@ const isPlusBtnDisabled = computed(() => {
 
 const incrementIngredientCount = () => {
   counterValue.value++;
+  emit("onChangeCount");
 };
 
 const decrementIngredientCount = () => {
   counterValue.value--;
+  emit("onChangeCount");
 };
+
+const emit = defineEmits(["onChangeCount"]);
 
 const inputValidate = (e) => {
   const value = parseInt(e.target.value.trim(), 10);

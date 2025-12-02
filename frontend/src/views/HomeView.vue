@@ -26,12 +26,12 @@
 
             <div class="sheet__content ingredients">
               <!-- Выбор соуса -->
-              <SaucesInput :sauces="normalizeSauces" v-model="selectedSauce" />
+              <SaucesInput v-model="selectedSauce" :sauces="normalizeSauces" />
 
               <!-- Выбор ингредиентов -->
               <IngredientsInput
                 :ingredients="normalizeIngredients"
-                v-model="selectedIngredients"
+                @on-update-selected-ingredients="onUpdateSelectedIngredients"
               />
             </div>
           </div>
@@ -91,6 +91,10 @@ const normalizeIngredients = computed(() => {
 });
 
 const selectedIngredients = ref([]);
+
+const onUpdateSelectedIngredients = ($event) => {
+  console.log($event);
+};
 </script>
 
 <style lang="scss">
