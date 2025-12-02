@@ -30,8 +30,8 @@
 
               <!-- Выбор ингредиентов -->
               <IngredientsInput
+                v-model="selectedIngredients"
                 :ingredients="normalizeIngredients"
-                @on-update-selected-ingredients="onUpdateSelectedIngredients"
               />
             </div>
           </div>
@@ -39,8 +39,7 @@
         <!-- Блок с пиццей -->
         <PizzaResult
           :dought="doughSelected"
-          :size="pizzaSelectedAlias"
-          :sauce="sauceSelectedValue"
+          :sauce="selectedSauce"
           :ingredients="selectedIngredients"
         />
       </div>
@@ -91,10 +90,6 @@ const normalizeIngredients = computed(() => {
 });
 
 const selectedIngredients = ref([]);
-
-const onUpdateSelectedIngredients = ($event) => {
-  console.log($event);
-};
 </script>
 
 <style lang="scss">

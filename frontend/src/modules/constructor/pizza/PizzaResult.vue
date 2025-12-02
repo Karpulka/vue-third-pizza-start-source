@@ -8,11 +8,14 @@
     />
 
     <div class="content__constructor">
-      <div class="pizza pizza--foundation--big-tomato">
+      <div class="pizza" :class="pizzaClass">
         <div class="pizza__wrapper">
-          <div class="pizza__filling pizza__filling--ananas"></div>
-          <div class="pizza__filling pizza__filling--bacon"></div>
-          <div class="pizza__filling pizza__filling--cheddar"></div>
+          <div
+            v-for="(ingredient, index) in resultIngredients"
+            :key="`${ingredient.alias}-${index}`"
+            class="pizza__filling"
+            :class="`pizza__filling--${ingredient.alias} ${ingredient.class}`"
+          ></div>
         </div>
       </div>
     </div>
@@ -25,18 +28,18 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 import AppInput from "@/common/components/AppInput.vue";
+
+import { INGREDIENTS_COUNT_CLASSES } from "@/common/constants";
+
+const pizzaClassPrefix = "pizza--foundation";
 
 const pizzaName = ref("");
 
 const props = defineProps({
   dought: {
-    type: String,
-    required: true,
-  },
-  size: {
     type: String,
     required: true,
   },
@@ -48,6 +51,31 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+});
+
+const pizzaClass = computed(() => {
+  return `${pizzaClassPrefix}--${props.dought}-${props.sauce}`;
+});
+
+const resultIngredients = computed(() => {
+  const result = [];
+
+  props.ingredients.forEach((ingredient) => {
+    let pizzaCountClass = "";
+    const elementCount = props.ingredients.filter(
+      (element) => element === ingredient
+    );
+
+    if (elementCount.length > 1) {
+      pizzaCountClass += `pizza__filling--${INGREDIENTS_COUNT_CLASSES[elementCount.length]}`;
+    }
+    result.push({
+      alias: ingredient,
+      class: pizzaCountClass,
+    });
+  });
+
+  return result;
 });
 </script>
 
@@ -97,19 +125,19 @@ const props = defineProps({
   background-position: center;
   background-size: 100%;
 
-  &--foundation--big-creamy {
+  &--foundation--large-creamy {
     background-image: url("@/assets/img/foundation/big-creamy.svg");
   }
 
-  &--foundation--big-tomato {
+  &--foundation--large-tomato {
     background-image: url("@/assets/img/foundation/big-tomato.svg");
   }
 
-  &--foundation--small-creamy {
+  &--foundation--light-creamy {
     background-image: url("@/assets/img/foundation/small-creamy.svg");
   }
 
-  &--foundation--small-tomato {
+  &--foundation--light-tomato {
     background-image: url("@/assets/img/foundation/small-tomato.svg");
   }
 }

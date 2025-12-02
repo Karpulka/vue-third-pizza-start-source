@@ -18,6 +18,12 @@
           :max-value="maxIngredientsCount"
           :is-input-disabled="ingredientsCount[ingredient.alias].isInputDisable"
           :class="`ingredients__counter`"
+          @on-change-count="
+            onChangeCount(
+              ingredientsCount[ingredient.alias].value,
+              ingredient.alias
+            )
+          "
         />
       </li>
     </ul>
@@ -25,7 +31,7 @@
 </template>
 
 <script setup>
-import { reactive, watch } from "vue";
+import { reactive } from "vue";
 
 import AppCounter from "@/common/components/AppCounter.vue";
 
@@ -48,15 +54,22 @@ props.ingredients.forEach((ingredient) => {
   };
 });
 
-const emit = defineEmits("onUpdateSelectedIngredients");
+const filteredIngredients = defineModel({ type: Array, default: () => [] });
 
-watch(ingredientsCount, () => {
-  const ingredients = Object.keys(ingredientsCount);
-  const filteredIngredients = ingredients.filter(
-    (ingredient) => ingredientsCount[ingredient].value > 0
+const onChangeCount = (count, ingredient) => {
+  let lastIndex = -1;
+  const ingredientsAlreadyAdded = filteredIngredients.value.filter(
+    (element, index) => {
+      lastIndex = element === ingredient ? index : lastIndex;
+      return element === ingredient;
+    }
   );
-  emit("onUpdateSelectedIngredients", filteredIngredients);
-});
+  if (ingredientsAlreadyAdded.length > count) {
+    filteredIngredients.value.splice(lastIndex, 1);
+  } else {
+    filteredIngredients.value.push(ingredient);
+  }
+};
 </script>
 
 <style lang="scss" scoped>
