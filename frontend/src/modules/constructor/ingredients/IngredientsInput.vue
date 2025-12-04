@@ -9,7 +9,10 @@
         class="ingredients__item"
       >
         <!-- Компонент AppDrag определяет какой ингредиент перемещается -->
-        <app-drag :data-transfer="ingredient" draggable>
+        <app-drag
+          :data-transfer="ingredient"
+          :draggable="ingredientsCount[ingredient.alias].isDraggable"
+        >
           <span class="filling" :class="`filling--${ingredient.alias}`">{{
             ingredient.name
           }}</span>
@@ -17,7 +20,7 @@
           <AppCounter
             v-model="ingredientsCount[ingredient.alias].value"
             :min-value="0"
-            :max-value="maxIngredientsCount"
+            :max-value="MAX_INGREDIENTS_COUNT"
             :is-input-disabled="
               ingredientsCount[ingredient.alias].isInputDisable
             "
@@ -41,7 +44,7 @@ import { computed } from "vue";
 import AppCounter from "@/common/components/AppCounter.vue";
 import AppDrag from "@/common/components/AppDrag.vue";
 
-const maxIngredientsCount = 3;
+import { MAX_INGREDIENTS_COUNT } from "@/common/constants";
 
 const props = defineProps({
   ingredients: {
@@ -63,6 +66,7 @@ const ingredientsCount = computed(() => {
     result[ingredient.alias] = {
       value,
       isInputDisable: false,
+      isDraggable: value < MAX_INGREDIENTS_COUNT,
     };
   });
 

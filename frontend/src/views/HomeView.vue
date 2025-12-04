@@ -67,6 +67,8 @@ import saucesAliases from "@/common/data/sauces";
 import sizesAliases from "@/common/data/sizes";
 import doughAliases from "@/common/data/doughSizes";
 
+import { MAX_INGREDIENTS_COUNT } from "@/common/constants";
+
 const normalizeDoughTypes = ref(addAliasToData(doughAliases, doughTypesData));
 
 const doughSelected = ref(normalizeDoughTypes.value[0].alias);
@@ -93,7 +95,13 @@ const normalizeIngredients = computed(() => {
 const selectedIngredients = ref([]);
 
 const moveIngredient = (ingredient) => {
-  selectedIngredients.value.push(ingredient.alias);
+  const ingredientsCount = selectedIngredients.value.filter(
+    (element) => element === ingredient.alias
+  ).length;
+
+  if (ingredientsCount < MAX_INGREDIENTS_COUNT) {
+    selectedIngredients.value.push(ingredient.alias);
+  }
 };
 </script>
 
