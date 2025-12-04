@@ -8,32 +8,38 @@
         :key="`ingredient-${ingredient.id}`"
         class="ingredients__item"
       >
-        <span class="filling" :class="`filling--${ingredient.alias}`">{{
-          ingredient.name
-        }}</span>
+        <!-- Компонент AppDrag определяет какой ингредиент перемещается -->
+        <app-drag :data-transfer="ingredient" draggable>
+          <span class="filling" :class="`filling--${ingredient.alias}`">{{
+            ingredient.name
+          }}</span>
 
-        <AppCounter
-          v-model="ingredientsCount[ingredient.alias].value"
-          :min-value="0"
-          :max-value="maxIngredientsCount"
-          :is-input-disabled="ingredientsCount[ingredient.alias].isInputDisable"
-          :class="`ingredients__counter`"
-          @on-change-count="
-            onChangeCount(
-              ingredientsCount[ingredient.alias].value,
-              ingredient.alias
-            )
-          "
-        />
+          <AppCounter
+            v-model="ingredientsCount[ingredient.alias].value"
+            :min-value="0"
+            :max-value="maxIngredientsCount"
+            :is-input-disabled="
+              ingredientsCount[ingredient.alias].isInputDisable
+            "
+            :class="`ingredients__counter`"
+            @on-change-count="
+              onChangeCount(
+                ingredientsCount[ingredient.alias].value,
+                ingredient.alias
+              )
+            "
+          />
+        </app-drag>
       </li>
     </ul>
   </div>
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { computed } from "vue";
 
 import AppCounter from "@/common/components/AppCounter.vue";
+import AppDrag from "@/common/components/AppDrag.vue";
 
 const maxIngredientsCount = 3;
 
@@ -45,16 +51,23 @@ const props = defineProps({
   },
 });
 
-const ingredientsCount = reactive({});
-
-props.ingredients.forEach((ingredient) => {
-  ingredientsCount[ingredient.alias] = {
-    value: 0,
-    isInputDisable: false,
-  };
-});
-
 const filteredIngredients = defineModel({ type: Array, default: () => [] });
+
+const ingredientsCount = computed(() => {
+  const result = {};
+
+  props.ingredients.forEach((ingredient) => {
+    const value = filteredIngredients.value.filter(
+      (element) => element === ingredient.alias
+    ).length;
+    result[ingredient.alias] = {
+      value,
+      isInputDisable: false,
+    };
+  });
+
+  return result;
+});
 
 const onChangeCount = (count, ingredient) => {
   let lastIndex = -1;
@@ -70,6 +83,8 @@ const onChangeCount = (count, ingredient) => {
     filteredIngredients.value.push(ingredient);
   }
 };
+
+defineEmits(["drop"]);
 </script>
 
 <style lang="scss" scoped>

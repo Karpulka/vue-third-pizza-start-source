@@ -1,6 +1,5 @@
-<!-- Кмопонент, куда перетаскивать другой комопнент -->
-
 <template>
+  <!-- Кмопонент, куда перетаскивать другой комопнент -->
   <div @drop.stop="onDrop" @dragover.prevent @dragenter.prevent>
     <slot />
   </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="content__pizza">
+  <app-drop class="content__pizza">
     <AppInput
       v-model="pizzaName"
       :title="`Название пиццы`"
@@ -24,13 +24,14 @@
       <p>Итого: 0 ₽</p>
       <button type="button" class="button" disabled>Готовьте!</button>
     </div>
-  </div>
+  </app-drop>
 </template>
 
 <script setup>
 import { ref, computed } from "vue";
 
 import AppInput from "@/common/components/AppInput.vue";
+import AppDrop from "@/common/components/AppDrop.vue";
 
 import { INGREDIENTS_COUNT_CLASSES } from "@/common/constants";
 

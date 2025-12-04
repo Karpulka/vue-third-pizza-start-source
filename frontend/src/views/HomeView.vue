@@ -41,6 +41,7 @@
           :dought="doughSelected"
           :sauce="selectedSauce"
           :ingredients="selectedIngredients"
+          @drop="moveIngredient"
         />
       </div>
     </form>
@@ -90,6 +91,10 @@ const normalizeIngredients = computed(() => {
 });
 
 const selectedIngredients = ref([]);
+
+const moveIngredient = (ingredient) => {
+  selectedIngredients.value.push(ingredient.alias);
+};
 </script>
 
 <style lang="scss">
