@@ -14,7 +14,7 @@
         <!-- Выбор размера пиццы -->
         <SizesInput
           v-if="sizes && sizes.length"
-          v-model="pizzaSelectedAlias"
+          v-model="pizzaSeletedSize"
           :sizes="normalizeSizes"
         />
 
@@ -37,12 +37,26 @@
           </div>
         </div>
         <!-- Блок с пиццей -->
-        <PizzaResult
-          :dought="doughSelected"
-          :sauce="selectedSauce"
-          :ingredients="selectedIngredients"
-          @drop="moveIngredient"
-        />
+        <div class="content__pizza">
+          <PizzaResult
+            v-model="pizzaName"
+            :dought="doughSelected"
+            :sauce="selectedSauce"
+            :ingredients="selectedIngredients"
+            @drop="moveIngredient"
+          />
+
+          <div class="content__result">
+            <p>Итого: {{ price }} ₽</p>
+            <button
+              type="button"
+              class="button"
+              :disabled="isResultBtnDisabled"
+            >
+              Готовьте!
+            </button>
+          </div>
+        </div>
       </div>
     </form>
   </main>
@@ -74,25 +88,77 @@ const normalizeDoughTypes = ref(addAliasToData(doughAliases, doughTypesData));
 const doughSelected = ref(normalizeDoughTypes.value[0].alias);
 
 const normalizeSauces = ref(addAliasToData(saucesAliases, sauces));
-const sauceSelectedValue =
+const sauceSelected =
   normalizeSauces.value && normalizeSauces.value.length
     ? normalizeSauces.value[0].alias
     : "";
-const selectedSauce = ref(sauceSelectedValue);
+const selectedSauce = ref(sauceSelected);
+
+const selectedIngredients = ref([]);
 
 const normalizeSizes = computed(() => {
   return addAliasToData(sizesAliases, sizes);
 });
 
-const pizzaSelectedAlias = ref(getMaxPizzaAlias(normalizeSizes.value), {
-  type: String,
-});
+const pizzaSeletedSize = computed(() => getMaxPizzaAlias(normalizeSizes.value));
 
 const normalizeIngredients = computed(() => {
   return addAliasToData(ingredientsAliases, ingredients);
 });
 
-const selectedIngredients = ref([]);
+const pizzaName = ref("", { type: String });
+
+const resultPizza = computed(() => {
+  return {
+    name: pizzaName.value,
+    dought: doughSelected,
+    size: pizzaSeletedSize,
+    sauce: selectedSauce,
+    ingredients: selectedIngredients.value.reduce((acc, item) => {
+      if (acc[item]) {
+        acc[item]++;
+      } else {
+        acc[item] = 1;
+      }
+      return acc;
+    }, {}),
+  };
+});
+
+const IngredientsPriceMap = {};
+normalizeIngredients.value.forEach((ingredient) => {
+  IngredientsPriceMap[ingredient.alias] = ingredient.price;
+});
+
+const price = computed(() => {
+  let result = 0;
+
+  const sizeMultiplier =
+    normalizeSizes.value.find((item) => item.alias === pizzaSeletedSize.value)
+      ?.multiplier ?? 1;
+
+  const doughtPrice =
+    normalizeDoughTypes.value.find((item) => item.alias === doughSelected.value)
+      ?.price ?? 0;
+
+  const saucePrice =
+    normalizeSauces.value.find((item) => item.alias === selectedSauce.value)
+      ?.price ?? 0;
+
+  const ingredientsPrice = Object.keys(resultPizza.value.ingredients).reduce(
+    (acc, item) =>
+      acc + IngredientsPriceMap[item] * resultPizza.value.ingredients[item],
+    0
+  );
+
+  result = (doughtPrice + saucePrice + ingredientsPrice) * sizeMultiplier;
+
+  return result;
+});
+
+const isResultBtnDisabled = computed(
+  () => price.value === 0 || !resultPizza.value.name
+);
 
 const moveIngredient = (ingredient) => {
   const ingredientsCount = selectedIngredients.value.filter(
@@ -280,6 +346,25 @@ const moveIngredient = (ingredient) => {
   &--white {
     background-color: $white;
     color: $green-500;
+  }
+}
+
+.content__result {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 25px;
+
+  p {
+    @include b-s24-h28;
+
+    margin: 0;
+  }
+
+  button {
+    margin-left: 12px;
+    padding: 16px 45px;
   }
 }
 </style>

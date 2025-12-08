@@ -1,12 +1,12 @@
 <template>
-  <label class="radio ingredients__input">
+  <label class="radio" :class="classes">
     <input v-model="inputValue" type="radio" :name="name" :value="value" />
     <span>{{ text }}</span>
   </label>
 </template>
 
 <script setup>
-const props = defineProps({
+defineProps({
   name: {
     type: String,
     required: true,
@@ -18,6 +18,11 @@ const props = defineProps({
   text: {
     type: String,
     required: true,
+  },
+  classes: {
+    type: String,
+    required: false,
+    default: "",
   },
 });
 
@@ -92,10 +97,5 @@ const inputValue = defineModel({
       }
     }
   }
-}
-
-.ingredients__input {
-  margin-right: 24px;
-  margin-bottom: 10px;
 }
 </style>

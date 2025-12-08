@@ -2,16 +2,17 @@
   <label class="input">
     <span v-if="title" class="visually-hidden">{{ title }}</span>
     <input
-      :value="value"
+      :value="modelValue"
       type="text"
       :name="inputName"
       :placeholder="placeholder"
+      @input="emit('update:modelValue', $event.target.value)"
     />
   </label>
 </template>
 
 <script setup>
-const props = defineProps({
+defineProps({
   title: {
     type: String,
     required: false,
@@ -26,11 +27,13 @@ const props = defineProps({
     required: false,
     default: "",
   },
+  modelValue: {
+    type: String,
+    required: true,
+  },
 });
 
-const value = defineModel({
-  type: String,
-});
+const emit = defineEmits(["update:modelValue"]);
 </script>
 
 <style lang="scss" scoped>

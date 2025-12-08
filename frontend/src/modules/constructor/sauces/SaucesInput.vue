@@ -9,6 +9,7 @@
       :name="`sauce`"
       :value="sauce.alias"
       :text="sauce.name"
+      :classes="`ingredients__input`"
     />
   </div>
 </template>
@@ -16,7 +17,7 @@
 <script setup>
 import AppRadioInputDefault from "@/common/components/AppRadioInputDefault.vue";
 
-const props = defineProps({
+defineProps({
   sauces: {
     type: Array,
     default: () => [],
@@ -44,5 +45,10 @@ const sauceSelected = defineModel({ type: String, required: true });
     margin-right: 16px;
     margin-bottom: 10px;
   }
+}
+
+.ingredients__input {
+  margin-right: 24px;
+  margin-bottom: 10px;
 }
 </style>

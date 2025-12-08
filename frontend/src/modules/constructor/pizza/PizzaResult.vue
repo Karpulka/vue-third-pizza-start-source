@@ -1,12 +1,12 @@
 <template>
-  <app-drop class="content__pizza">
+  <app-drop>
     <AppInput
       v-model="pizzaName"
       :title="`Название пиццы`"
       :input-name="`pizza_name`"
       :placeholder="`Введите название пиццы`"
+      @update="emit('update:modelValue', event)"
     />
-
     <div class="content__constructor">
       <div class="pizza" :class="pizzaClass">
         <div class="pizza__wrapper">
@@ -19,16 +19,11 @@
         </div>
       </div>
     </div>
-
-    <div class="content__result">
-      <p>Итого: 0 ₽</p>
-      <button type="button" class="button" disabled>Готовьте!</button>
-    </div>
   </app-drop>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { computed } from "vue";
 
 import AppInput from "@/common/components/AppInput.vue";
 import AppDrop from "@/common/components/AppDrop.vue";
@@ -37,7 +32,7 @@ import { INGREDIENTS_COUNT_CLASSES } from "@/common/constants";
 
 const pizzaClassPrefix = "pizza--foundation";
 
-const pizzaName = ref("");
+const pizzaName = defineModel({ type: String });
 
 const props = defineProps({
   dought: {
@@ -78,6 +73,8 @@ const resultIngredients = computed(() => {
 
   return result;
 });
+
+const emit = defineEmits(["update:modelValue"]);
 </script>
 
 <style lang="scss">
@@ -93,25 +90,6 @@ const resultIngredients = computed(() => {
   margin-top: 25px;
   margin-right: auto;
   margin-left: auto;
-}
-
-.content__result {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  margin-top: 25px;
-
-  p {
-    @include b-s24-h28;
-
-    margin: 0;
-  }
-
-  button {
-    margin-left: 12px;
-    padding: 16px 45px;
-  }
 }
 
 .pizza {

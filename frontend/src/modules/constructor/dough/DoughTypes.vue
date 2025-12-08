@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-const props = defineProps({
+defineProps({
   doughTypes: {
     type: Array,
     required: true,

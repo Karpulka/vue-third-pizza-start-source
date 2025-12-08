@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-const props = defineProps({
+defineProps({
   sizes: {
     type: Array,
     default: () => [],
