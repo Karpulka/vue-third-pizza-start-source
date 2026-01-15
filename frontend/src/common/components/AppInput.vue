@@ -1,9 +1,11 @@
 <template>
   <label class="input">
-    <span v-if="title" class="visually-hidden">{{ title }}</span>
+    <span v-if="title" :class="{ 'visually-hidden': !isTitle }">{{
+      title
+    }}</span>
     <input
       :value="modelValue"
-      type="text"
+      :type="inputType"
       :name="inputName"
       :placeholder="placeholder"
       @input="emit('update:modelValue', $event.target.value)"
@@ -30,6 +32,14 @@ defineProps({
   modelValue: {
     type: String,
     required: true,
+  },
+  inputType: {
+    type: String,
+    default: "text",
+  },
+  isTitle: {
+    type: Boolean,
+    default: false,
   },
 });
 

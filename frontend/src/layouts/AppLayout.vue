@@ -1,6 +1,6 @@
 <template>
   <div>
-    <app-header />
+    <app-header v-if="!$route.meta.isHeaderHidden" />
     <slot />
   </div>
 </template>

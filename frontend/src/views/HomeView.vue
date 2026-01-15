@@ -173,7 +173,6 @@ const moveIngredient = (ingredient) => {
 
 <style lang="scss">
 @use "@/assets/scss/ds-system/ds-typography" as *;
-@use "@/assets/scss/common.scss";
 
 .content__ingredients {
   width: 527px;
