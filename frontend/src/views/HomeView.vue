@@ -96,11 +96,9 @@ const selectedSauce = ref(sauceSelected);
 
 const selectedIngredients = ref([]);
 
-const normalizeSizes = computed(() => {
-  return addAliasToData(sizesAliases, sizes);
-});
+const normalizeSizes = ref(addAliasToData(sizesAliases, sizes));
 
-const pizzaSeletedSize = computed(() => getMaxPizzaAlias(normalizeSizes.value));
+const pizzaSeletedSize = ref(getMaxPizzaAlias(normalizeSizes.value));
 
 const normalizeIngredients = computed(() => {
   return addAliasToData(ingredientsAliases, ingredients);

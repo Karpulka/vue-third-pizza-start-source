@@ -24,3 +24,13 @@ export const getMaxPizzaAlias = (pizzas) => {
 
   return result;
 };
+
+export const getImageUrl = (imageUrl) => `@/assets/img/${imageUrl}`;
+
+export const getParamName = (alias, paramsMap, params) => {
+  const paramId = Object.keys(paramsMap).find(
+    (index) => paramsMap[index] === alias
+  );
+
+  return params.find((item) => item.id === paramId).name;
+};
