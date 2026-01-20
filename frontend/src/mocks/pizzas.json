@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "name": "Моя пицца",
+    "dought": "large",
+    "size": "normal",
+    "sauce": "tomato",
+    "ingredients": {
+      "bacon": 1,
+      "chile": 1,
+      "onion": 1
+    },
+    "price": 2228
+  },
+  {
+    "id": 2,
+    "name": "Моя пицца 2",
+    "dought": "light",
+    "size": "big",
+    "sauce": "tomato",
+    "ingredients": {
+      "bacon": 1,
+      "chile": 1,
+      "onion": 1
+    },
+    "price": 3324
+  },
+  {
+    "id": 3,
+    "name": "Моя пицца 3",
+    "dought": "light",
+    "size": "small",
+    "sauce": "tomato",
+    "ingredients": {
+      "bacon": 1,
+      "onion": 1
+    },
+    "price": 1500
+  },
+  {
+    "id": 4,
+    "name": "Моя пицца 4",
+    "dought": "light",
+    "size": "small",
+    "sauce": "tomato",
+    "ingredients": {
+      "bacon": 2,
+      "onion": 1
+    },
+    "price": 1600
+  }
+]

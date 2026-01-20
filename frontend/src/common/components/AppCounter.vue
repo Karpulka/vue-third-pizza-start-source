@@ -1,5 +1,5 @@
 <template>
-  <div class="counter counter--orange">
+  <div class="counter" :class="blockColorVersion">
     <button
       type="button"
       class="counter__button counter__button--minus"
@@ -20,6 +20,7 @@
     <button
       type="button"
       class="counter__button counter__button--plus"
+      :class="buttonColorVersion"
       :disabled="isPlusBtnDisabled"
       @click="incrementIngredientCount"
     >
@@ -43,6 +44,20 @@ const props = defineProps({
     required: false,
     default: NaN,
   },
+  colorVersion: {
+    type: String,
+    default: "",
+  },
+});
+
+const buttonColorVersion = computed(() => {
+  return props.colorVersion.length
+    ? `counter__button--${props.colorVersion}`
+    : "";
+});
+
+const blockColorVersion = computed(() => {
+  return props.colorVersion.length ? `counter--${props.colorVersion}` : "";
 });
 
 let counterValue = defineModel({
@@ -66,6 +81,8 @@ const isPlusBtnDisabled = computed(() => {
   return false;
 });
 
+const emit = defineEmits(["onChangeCount"]);
+
 const incrementIngredientCount = () => {
   counterValue.value++;
   emit("onChangeCount");
@@ -75,8 +92,6 @@ const decrementIngredientCount = () => {
   counterValue.value--;
   emit("onChangeCount");
 };
-
-const emit = defineEmits(["onChangeCount"]);
 
 const inputValidate = (e) => {
   const value = parseInt(e.target.value.trim(), 10);

@@ -6,14 +6,13 @@
           <h1 class="title title--big">Корзина</h1>
         </div>
 
-        <!-- <div class="sheet cart__empty" v-if="!pizzas || !pizzas.length">
+        <div class="sheet cart__empty" v-if="!pizzas || !pizzas.length">
           <p>В корзине нет ни одного товара</p>
         </div>
-        <template v-else> -->
-
-        <cart-list :pizzas="pizzas" />
-        <div class="cart__additional">
-          <!-- <ul class="additional-list">
+        <template v-else>
+          <cart-list :pizzas="pizzas" @on-change-pizzas="onChangePizzas" />
+          <div class="cart__additional">
+            <!-- <ul class="additional-list">
             <li class="additional-list__item sheet">
               <p class="additional-list__description">
                 <img
@@ -129,26 +128,34 @@
               </div>
             </li>
           </ul> -->
-        </div>
+          </div>
 
-        <div class="cart__form"></div>
-        <!-- </template> -->
+          <div class="cart__form"></div>
+        </template>
       </div>
     </main>
-    <cart-footer />
+    <cart-footer :total="totalPrice" />
   </form>
 </template>
 
 <script setup>
+import { ref } from "vue";
 import CartFooter from "@/modules/cart/CartFooter.vue";
 import CartList from "@/modules/cart/CartList.vue";
+import pizzas from "@/mocks/pizzas.json";
 
-defineProps({
-  pizzas: {
-    type: Array,
-    default: () => [],
-  },
-});
+// defineProps({
+//   pizzas: {
+//     type: Array,
+//     default: () => [],
+//   },
+// });
+
+const totalPrice = ref(0);
+
+const onChangePizzas = (sum) => {
+  totalPrice.value = sum;
+};
 </script>
 
 <style lang="scss">

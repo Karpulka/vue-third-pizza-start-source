@@ -7,7 +7,7 @@
       Перейти к конструктору<br />чтоб собрать ещё одну пиццу
     </p>
     <div class="footer__price">
-      <b>Итого: 2 228 ₽</b>
+      <b>Итого: {{ validPrice }} ₽</b>
     </div>
 
     <div class="footer__submit">
@@ -15,6 +15,21 @@
     </div>
   </section>
 </template>
+
+<script setup>
+import { computed } from "vue";
+
+const props = defineProps({
+  total: {
+    type: Number,
+    default: 0,
+  },
+});
+
+const validPrice = computed(() =>
+  new Intl.NumberFormat("ru-RU").format(props.total)
+);
+</script>
 
 <style lang="scss">
 @use "@/assets/scss/ds-system/ds-colors";

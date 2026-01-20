@@ -2,7 +2,7 @@
   <li class="cart-list__item">
     <div class="product cart-list__product">
       <img
-        :src="getImageUrl('img/product.svg')"
+        :src="getImageUrl('product.svg')"
         class="product__img"
         width="56"
         height="56"
@@ -18,21 +18,16 @@
       </div>
     </div>
 
-    <div class="counter cart-list__counter">
-      <button type="button" class="counter__button counter__button--minus">
-        <span class="visually-hidden">Меньше</span>
-      </button>
-      <input type="text" name="counter" class="counter__input" value="1" />
-      <button
-        type="button"
-        class="counter__button counter__button--plus counter__button--orange"
-      >
-        <span class="visually-hidden">Больше</span>
-      </button>
-    </div>
+    <app-counter
+      v-model="count"
+      :class="`cart-list__counter`"
+      :min-value="0"
+      :color-version="'orange'"
+      @on-change-count="$emit('onChangePizzaCount', count)"
+    />
 
     <div v-if="price" class="cart-list__price">
-      <b>{{ price }} ₽</b>
+      <b>{{ price * count }} ₽</b>
     </div>
 
     <div class="cart-list__button">
@@ -43,6 +38,9 @@
 
 <script setup>
 import { computed } from "vue";
+
+import AppCounter from "@/common/components/AppCounter.vue";
+
 import { getImageUrl, getParamName } from "@/common/helpers";
 
 import doughTypesData from "@/mocks/dough.json";
@@ -76,7 +74,7 @@ const props = defineProps({
     default: "",
   },
   ingredients: {
-    type: Array,
+    type: Object,
     required: true,
     default: () => {},
   },
@@ -88,19 +86,20 @@ const props = defineProps({
 });
 
 const doughtName = computed(() => {
-  return getParamName(props.dought.value, doughAliases, doughTypesData);
+  return getParamName(props.dought, doughAliases, doughTypesData);
 });
 
 const sizeName = computed(() => {
-  return getParamName(props.size.value, sizesAliases, sizesData);
+  return getParamName(props.size, sizesAliases, sizesData);
 });
 
 const sauceName = computed(() => {
-  return getParamName(props.sauce.value, saucesAliases, saucesData);
+  return getParamName(props.sauce, saucesAliases, saucesData);
 });
 
 const ingredientsInfo = computed(() => {
-  return props.ingredients.value.reduce((result, ingredient) => {
+  const ingredientsNames = Object.keys(props.ingredients);
+  return ingredientsNames.reduce((result, ingredient) => {
     const ingredientName = getParamName(
       ingredient,
       ingredientsAliases,
@@ -114,11 +113,16 @@ const ingredientsInfo = computed(() => {
     return (result += ingredientName);
   }, "");
 });
+
+const count = defineModel({ type: Number, default: 1 });
+
+defineEmits(["onChangePizzaCount"]);
 </script>
 
 <style lang="scss" scoped>
 @use "@/assets/scss/ds-system/ds-colors";
 @use "@/assets/scss/ds-system/ds-typography";
+@use "@/assets/scss/mixins/m_clear-list";
 
 .cart-list__item {
   display: flex;
@@ -183,6 +187,27 @@ const ingredientsInfo = computed(() => {
 
   &:focus {
     color: ds-colors.$green-400;
+  }
+}
+
+.product {
+  display: flex;
+  align-items: center;
+}
+
+.product__text {
+  margin-left: 15px;
+
+  h2 {
+    @include ds-typography.b-s18-h21;
+
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+
+  ul {
+    @include m_clear-list.clear-list;
+    @include ds-typography.l-s11-h13;
   }
 }
 </style>
