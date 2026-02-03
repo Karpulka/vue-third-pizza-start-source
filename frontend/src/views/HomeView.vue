@@ -1,65 +1,57 @@
 <template>
-  <main class="content">
-    <form action="#" method="post">
-      <div class="content__wrapper">
-        <h1 class="title title--big">Конструктор пиццы</h1>
+  <form action="#" method="post">
+    <div class="content__wrapper">
+      <h1 class="title title--big">Конструктор пиццы</h1>
 
-        <!-- Выбор теста -->
-        <DoughTypes
-          v-if="normalizeDoughTypes && normalizeDoughTypes.length"
-          v-model="doughSelected"
-          :dough-types="normalizeDoughTypes"
-        />
+      <!-- Выбор теста -->
+      <DoughTypes
+        v-if="normalizeDoughTypes && normalizeDoughTypes.length"
+        v-model="doughSelected"
+        :dough-types="normalizeDoughTypes"
+      />
 
-        <!-- Выбор размера пиццы -->
-        <SizesInput
-          v-if="sizes && sizes.length"
-          v-model="pizzaSeletedSize"
-          :sizes="normalizeSizes"
-        />
+      <!-- Выбор размера пиццы -->
+      <SizesInput
+        v-if="sizes && sizes.length"
+        v-model="pizzaSeletedSize"
+        :sizes="normalizeSizes"
+      />
 
-        <div class="content__ingredients">
-          <div class="sheet">
-            <h2 class="title title--small sheet__title">
-              Выберите ингредиенты
-            </h2>
+      <div class="content__ingredients">
+        <div class="sheet">
+          <h2 class="title title--small sheet__title">Выберите ингредиенты</h2>
 
-            <div class="sheet__content ingredients">
-              <!-- Выбор соуса -->
-              <SaucesInput v-model="selectedSauce" :sauces="normalizeSauces" />
+          <div class="sheet__content ingredients">
+            <!-- Выбор соуса -->
+            <SaucesInput v-model="selectedSauce" :sauces="normalizeSauces" />
 
-              <!-- Выбор ингредиентов -->
-              <IngredientsInput
-                v-model="selectedIngredients"
-                :ingredients="normalizeIngredients"
-              />
-            </div>
-          </div>
-        </div>
-        <!-- Блок с пиццей -->
-        <div class="content__pizza">
-          <PizzaResult
-            v-model="pizzaName"
-            :dought="doughSelected"
-            :sauce="selectedSauce"
-            :ingredients="selectedIngredients"
-            @drop="moveIngredient"
-          />
-
-          <div class="content__result">
-            <p>Итого: {{ price }} ₽</p>
-            <button
-              type="button"
-              class="button"
-              :disabled="isResultBtnDisabled"
-            >
-              Готовьте!
-            </button>
+            <!-- Выбор ингредиентов -->
+            <IngredientsInput
+              v-model="selectedIngredients"
+              :ingredients="normalizeIngredients"
+            />
           </div>
         </div>
       </div>
-    </form>
-  </main>
+      <!-- Блок с пиццей -->
+      <div class="content__pizza">
+        <PizzaResult
+          v-model="pizzaName"
+          :dought="doughSelected"
+          :sauce="selectedSauce"
+          :ingredients="selectedIngredients"
+          @drop="moveIngredient"
+        />
+
+        <div class="content__result">
+          <p>Итого: {{ price }} ₽</p>
+          <button type="button" class="button" :disabled="isResultBtnDisabled">
+            Готовьте!
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
 </template>
 
 <script setup>
@@ -146,7 +138,7 @@ const price = computed(() => {
   const ingredientsPrice = Object.keys(resultPizza.value.ingredients).reduce(
     (acc, item) =>
       acc + IngredientsPriceMap[item] * resultPizza.value.ingredients[item],
-    0
+    0,
   );
 
   result = (doughtPrice + saucePrice + ingredientsPrice) * sizeMultiplier;
@@ -155,12 +147,12 @@ const price = computed(() => {
 });
 
 const isResultBtnDisabled = computed(
-  () => price.value === 0 || !resultPizza.value.name
+  () => price.value === 0 || !resultPizza.value.name,
 );
 
 const moveIngredient = (ingredient) => {
   const ingredientsCount = selectedIngredients.value.filter(
-    (element) => element === ingredient.alias
+    (element) => element === ingredient.alias,
   ).length;
 
   if (ingredientsCount < MAX_INGREDIENTS_COUNT) {
@@ -171,6 +163,18 @@ const moveIngredient = (ingredient) => {
 
 <style lang="scss">
 @use "@/assets/scss/ds-system/ds-typography" as *;
+
+.content__wrapper {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+
+  width: 920px;
+  margin: 0 auto;
+  padding-right: 2.12%;
+  padding-bottom: 30px;
+  padding-left: 2.12%;
+}
 
 .content__ingredients {
   width: 527px;
