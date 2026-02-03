@@ -44,6 +44,7 @@
 
 <style lang="scss">
 @use "@/assets/scss/ds-system/ds-typography";
+@use "@/assets/scss/ds-system/ds-colors";
 
 .cart-form {
   display: flex;
@@ -84,6 +85,96 @@
 
   &--small {
     max-width: 120px;
+  }
+}
+
+.select {
+  @include ds-typography.r-s16-h19;
+
+  display: block;
+
+  margin: 0;
+  padding: 8px 16px;
+  padding-right: 30px;
+
+  cursor: pointer;
+  transition: 0.3s;
+
+  color: ds-colors.$black;
+  border: 1px solid ds-colors.$purple-400;
+  border-radius: 8px;
+  outline: none;
+  background-color: ds-colors.$silver-100;
+  background-image: url("@/assets/img/select.svg");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+
+  font-family: inherit;
+
+  appearance: none;
+
+  &:hover {
+    border-color: ds-colors.$orange-100;
+  }
+
+  &:focus {
+    border-color: ds-colors.$green-500;
+  }
+}
+
+.input {
+  display: block;
+
+  span {
+    @include ds-typography.r-s14-h16;
+
+    display: block;
+
+    margin-bottom: 4px;
+  }
+
+  input {
+    @include ds-typography.r-s16-h19;
+
+    display: block;
+
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: 8px 16px;
+
+    transition: 0.3s;
+
+    color: ds-colors.$black;
+    border: 1px solid ds-colors.$purple-400;
+    border-radius: 8px;
+    outline: none;
+    background-color: ds-colors.$white;
+
+    font-family: inherit;
+
+    &:focus {
+      border-color: ds-colors.$green-500;
+    }
+  }
+
+  &:hover {
+    input {
+      border-color: ds-colors.$black;
+    }
+  }
+
+  &--big-label {
+    display: flex;
+    align-items: center;
+
+    span {
+      @include ds-typography.b-s16-h19;
+
+      margin-right: 16px;
+
+      white-space: nowrap;
+    }
   }
 }
 </style>

@@ -22,7 +22,7 @@
             </ul>
           </div>
 
-          <div class="cart__form"></div>
+          <cart-form />
         </template>
       </div>
     </main>
@@ -35,6 +35,7 @@ import { ref, reactive, computed } from "vue";
 import CartFooter from "@/modules/cart/CartFooter.vue";
 import CartList from "@/modules/cart/CartList.vue";
 import AdditionalItem from "@/modules/cart/AdditionalItem.vue";
+import CartForm from "@/modules/cart/CartForm.vue";
 import pizzas from "@/mocks/pizzas.json";
 import additionals from "@/mocks/additionals.json";
 
