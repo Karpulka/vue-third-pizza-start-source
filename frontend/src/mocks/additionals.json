@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "name": "Coca-Cola 0,5 литра",
+    "image": "cola.svg",
+    "price": 56,
+    "count": 0
+  },
+  {
+    "id": 2,
+    "name": "Острый соус",
+    "image": "sauce.svg",
+    "price": 30,
+    "count": 0
+  },
+  {
+    "id": 3,
+    "name": "Картошка из печи",
+    "image": "potato.svg",
+    "price": 56,
+    "count": 0
+  }
+]
