@@ -8,6 +8,7 @@
       :type="inputType"
       :name="inputName"
       :placeholder="placeholder"
+      :required="isRequired"
       @input="emit('update:modelValue', $event.target.value)"
     />
   </label>
@@ -38,6 +39,10 @@ defineProps({
     default: "text",
   },
   isTitle: {
+    type: Boolean,
+    default: false,
+  },
+  isRequired: {
     type: Boolean,
     default: false,
   },

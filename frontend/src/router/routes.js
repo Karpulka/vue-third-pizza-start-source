@@ -2,7 +2,7 @@ import HomeView from "@/views/HomeView.vue";
 import LoginView from "@/views/LoginView.vue";
 import CartView from "@/views/CartView.vue";
 import OrdersView from "@/views/OrdersView.vue";
-// import ProfileView from "@/views/ProfileView.vue";
+import ProfileView from "@/views/ProfileView.vue";
 
 export default [
   {
@@ -29,9 +29,13 @@ export default [
       layout: "AppLayoutProfile",
     },
   },
-  //   {
-  //     path: "/profile",
-  //     name: "Profile",
-  //     component: ProfileView,
-  //   },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: ProfileView,
+
+    meta: {
+      layout: "AppLayoutProfile",
+    },
+  },
 ];
