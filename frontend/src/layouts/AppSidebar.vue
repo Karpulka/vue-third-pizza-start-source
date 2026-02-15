@@ -1,18 +1,26 @@
 <template>
   <div class="layout__sidebar sidebar">
-    <a href="index.html" class="logo layout__logo">
+    <router-link :to="{ name: 'Home' }" class="logo layout__logo">
       <img
         src="@/assets/img/logo.svg"
         alt="V!U!E! Pizza logo"
         width="90"
         height="40"
       />
-    </a>
+    </router-link>
 
-    <a class="layout__link layout__link--active" href="/orders"
-      >История заказов</a
+    <router-link
+      class="layout__link"
+      :exact-active-class="'layout__link--active'"
+      :to="{ name: 'Orders' }"
+      >История заказов</router-link
     >
-    <a class="layout__link" href="/profile">Мои данные</a>
+    <router-link
+      class="layout__link"
+      :to="{ name: 'Profile' }"
+      :exact-active-class="'layout__link--active'"
+      >Мои данные</router-link
+    >
   </div>
 </template>
 
